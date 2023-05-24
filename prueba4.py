@@ -19,7 +19,7 @@ class Persona(StructuredNode):
     padre = RelationshipTo('Persona', 'PADRE')
     madre = RelationshipTo('Persona', 'MADRE')
     hermanos = RelationshipTo('Persona', 'HERMANO')
-    hijos = RelationshipFrom('Persona', 'PADRE')
+    hijos = RelationshipFrom('Persona', 'HIJOS')
 
     
 
