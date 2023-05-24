@@ -19,10 +19,9 @@ class Persona(StructuredNode):
     padre = RelationshipTo('Persona', 'PADRE')
     madre = RelationshipTo('Persona', 'MADRE')
     hermanos = RelationshipTo('Persona', 'HERMANO')
+    hijos = RelationshipFrom('Persona', 'PADRE')
 
-    hijo_de = RelationshipFrom('Persona', 'PADRE')
-    hija_de = RelationshipFrom('Persona', 'MADRE')
-    hermano_de = RelationshipFrom('Persona', 'HERMANO')
+    
 
 
 #estr=EstructuraD(dato='zxc3',dato2='qwe3').save()
@@ -35,6 +34,7 @@ class Persona(StructuredNode):
 #mario=Persona(nombre1='Mario', apellido1='Prieto',ci="21543534").save()
 
 persona = Persona.nodes.get(ci='1231221331')
+# persona.padre.connect(Persona.nodes.get(ci='45334234'))
 if persona is not None:
     print(f"Se encontró a la persona: {persona.nombre1} {persona.apellido1}")
 else:
