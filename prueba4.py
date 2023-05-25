@@ -18,8 +18,55 @@ class Persona(StructuredNode):
 
     padre = RelationshipTo('Persona', 'PADRE')
     madre = RelationshipTo('Persona', 'MADRE')
-    hermanos = RelationshipTo('Persona', 'HERMANO')
-    hijos = RelationshipFrom('Persona', 'HIJOS')
+    hermanos = RelationshipTo('Persona', 'HERMANOS')
+
+    hijos = RelationshipTo('Persona', 'HIJOS')
+
+    # def esHijoDe(self,padre):
+    #     for hijo in padre.hijos:
+    #         if hijo.id==self.id:
+    #             return True
+    #     return False
+    def tieneComoHijoA(self,hijoABuscar):
+        for hijo in self.hijos:
+            if hijo.id==hijoABuscar.id:
+                return True
+        return False
+    def getPadre(self):
+        if len(self.padre)>0:
+            return self.padre[0]
+        return None
+    def getMadre(self):
+        if len(self.madre)>0:
+            return self.madre[0]
+        return None
+    def tieneComoPadreA(self,padreABuscar):
+        padre=self.getPadre()
+        return padre.id==padreABuscar.id if padre is not None else False
+    def tieneComoMadreA(self,madreABuscar):
+        madre=self.getPadre()
+        return madre.id==madreABuscar.id if madre is not None else False
+    def tieneComoHermanoA(self,ABuscar):
+        for hermanos in self.hermanos:
+            if hermanos.id==ABuscar.id:
+                return True
+        return False
+
+    @staticmethod
+    def delete_all_personas():
+        db.cypher_query('MATCH (n:Persona) DETACH DELETE n')
+    @staticmethod
+    def agregar_relacion_padre_hijo(padre, hijo):
+        padre.hijos.connect(hijo)
+        hijo.padre.connect(padre)
+    @staticmethod
+    def findById(id):
+        query = "MATCH (p:Persona) WHERE ID(p) = " + str(id) + " RETURN p"
+        results, meta = db.cypher_query(query)#, {"id_persona": id}
+        if len(results) == 0:
+            return None
+        else:
+            return Persona.inflate(results[0][0])
 
     
 
